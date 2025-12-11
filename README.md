@@ -1,6 +1,10 @@
-### TextBelt Open Source
+# TextBelt Open Source
 
 TextBelt Open Source is a REST API that sends outgoing SMS.  It uses a free mechanism for sending texts, different from the more reliable paid version available at https://textbelt.com.
+
+## Docs Site
+
+[https://docs.textbelt.com/](https://docs.textbelt.com/)
 
 This project uses carrier-specific gateways to deliver your text messages for free, and without ads.  The service is fairly reliable when configured on a private server and has sent over 1 million texts.
 
@@ -88,6 +92,64 @@ Textbelt can be run as a standalone server with: `node server/app.js`.  Be sure 
 By default, the server listens on port 9090.
 
 Don't forget to set `fromAddress` in `lib/config.js` to the email address you want to send from.
+
+### Web UI
+
+TextBelt now includes a modern React-based web interface for sending SMS messages.
+
+#### Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   cd client && npm install
+   ```
+
+2. **Configure email transport** in `lib/config.js` (required for sending messages)
+
+3. **Start Redis:**
+   ```bash
+   redis-server
+   ```
+
+#### Development
+
+Run both the API server and React development server concurrently:
+
+```bash
+npm run dev
+```
+
+This will start:
+- Express API server on `http://localhost:9090`
+- React dev server on `http://localhost:5173` (with hot reload)
+
+You can also run them separately:
+```bash
+npm run dev:server  # Just the API server
+npm run dev:client  # Just the React app
+```
+
+#### Production
+
+Build the React app and serve it from the Express server:
+
+```bash
+npm run build
+NODE_ENV=production npm start
+```
+
+The UI will be available at `http://localhost:9090`
+
+#### Features
+
+The web UI includes:
+- **SMS Form** - Send messages to US, Canadian, and international numbers
+- **Region Selection** - Choose between US, Canada, and International regions
+- **Carrier Selection** - Optionally target a specific carrier or broadcast to all
+- **Response History** - View last 20 messages sent (stored in browser localStorage)
+- **Configuration Helper** - Instructions for setting up email transport
+- **Real-time Validation** - Phone number and message validation
 
 ### Canadian and International endpoints
 

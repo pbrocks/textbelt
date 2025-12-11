@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const carriers = require('../lib/carriers.js');
 const providers = require('../lib/providers.js');
@@ -97,6 +98,16 @@ app.post('/canada', (req, res) => {
 app.post('/intl', (req, res) => {
   textRequestHandler(req, res, stripPhone(req.body.number), req.body.carrier, 'intl');
 });
+
+// Serve static files from React build in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  // SPA fallback - send index.html for unknown routes
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
+}
 
 // Start server
 const port = process.env.PORT || 9090;
